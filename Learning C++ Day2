@@ -1,0 +1,256 @@
+#include <iostream>
+#include <iomanip>
+#include <cstring>
+#include <cstdarg>
+
+using namespace std;
+
+void fun1()
+{
+    int max{};
+    cout<< "Enter the number of primes you would like (at leas"
+           "t 4)"<<endl;//计算需要几个质数
+    cin >> max;
+
+    if(max < 4)
+        max = 4;
+
+    long* pprime{new long[max] {2l, 3l, 5l}};
+
+    long trial {5L};
+    int count {3};
+    bool found {false};
+
+    do
+        {
+            trial += 2l;
+            found = false;
+
+            for (int i = 0; i < count; ++i) {
+                found = (trial % *(pprime + i)) == 0;
+                if(found)
+                    break;
+            }
+            if (!found)
+            {
+                *(pprime + count++) = trial;
+            }
+        }while (count < max);
+
+    //output primes 5 to 1 line
+    for (int j = 0; j < max; ++j) {
+        if (j % 5 ==0){
+            cout << endl;
+        }
+
+    cout <<setw(10)<<*(pprime + j);
+
+    }
+    delete [] pprime;
+    pprime = nullptr;
+    cout << endl;
+}
+void fun2()
+{
+    double temperatures[5]{78.6, 89.2, 65.8, 75.0, 69.3};
+    const double FtoC {5.0/9.0};
+    for (auto& t :temperatures) {
+        t = (t-32) * FtoC;
+    }
+    for (const auto& t: temperatures) {
+        cout <<" "<<fixed<<setprecision(2)<<t;
+    }
+}
+void fun3()
+{
+//   const size_t  count{30};
+//   char str1[count]{"Many hands"};
+//   const char* str2{"make light work."};
+//   errno_t error {strcat_s("";"")};
+}
+void fun4() //搜素以空字符结尾的字符串
+{
+    char str[] {"Smith, where Jones had had \" had had \" had had \" had\"."
+                "\n\" Had had\" had had the examiners'approval."};
+    const char* word{"had"};
+    cout << "The string to be searched is: "<< endl << str << endl;
+    int count{};
+    char* pstr{str};
+    char* found{nullptr};
+    const size_t wordLength{strlen(word)};
+    while(true)
+    {
+        found = strstr(pstr,word);
+        if(!found){
+            break;
+        }
+        ++count;
+        pstr = found + wordLength;
+    }
+    //output results
+    cout << "\"" <<word << "\"was found " << count <<" times in the string;" << endl;
+}
+double power(double x, int n);
+
+void fun5()
+{
+    int index{3};
+    double x{1};
+    double y{};
+
+    y = power(5.0, 3);
+    cout << endl << "5.0 cubed = " << y;
+    cout << endl << "3.0 cubed = " <<power(3.0, index)<<endl;
+    x= power(x, power(2.0,2.0));
+    cout  <<"x= "<< x<< endl;
+}
+double power(double x, int n)
+{
+    double result{1.0};
+    for (int i = 0; i < n; ++i) {
+        result *= x;
+    }
+    return result;
+}
+int incr10(int* num);
+void fun6()
+{
+    int num{3};
+    int *pnum{&num};
+    cout << endl <<"Address passed = "<< pnum << endl;
+    int result(incr10(pnum));
+    cout <<"num = " << num << endl;
+}
+
+int incr10(int* num)
+{
+    *num += 10;
+    return *num;
+}
+double average(double* array, int count)
+{
+    double sum {};
+    for (int i = 0; i < count; ++i) {
+        sum +=  *array++;
+    }
+    return sum/count;
+}
+
+void fun7()
+{
+    double value[]{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0};
+    cout << endl << "Average = " << average(value,(sizeof value)/ (sizeof value[0]))<<endl;
+}
+void fun8()
+{
+    string name{"Bob"};
+    cout<<endl <<"Game player is: "<< name<<". Welcome back to game."<<endl;
+}
+double yield(double beans[][4], int count)
+{
+    double sum{};
+    for (int i = 0; i < count; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            sum += beans[i][j];
+        }
+    }
+    return sum;
+}
+void fun9()
+{
+    double beans[3][4]{
+            {1.0, 2.0, 3.0, 4.0},
+            {5.0, 6.0, 7.0, 8.0},
+            {9.0, 10.0, 11.0, 12.0}
+    };
+    cout << "Yield = " << yield(beans, 3)<<endl;
+}
+int incr10(int& num)
+{
+    cout << endl << "Value received = " << num;
+    num += 10;
+    return num;
+}
+void fun10()
+{
+    int num{3};
+    int value{6};
+
+    int result{incr10(num)};
+
+    cout << endl<< "incr10(num) = " << result
+         << endl <<"value = " << num;
+
+    result = incr10(value);
+    cout << endl << "incr10(value) = " << value
+         << endl << "value = " << value << endl;
+}
+void fun11()
+{
+    const int MAX{10};
+    int array[MAX]{};
+    int i{};
+    while(i<((sizeof array)/(sizeof array[0])))
+    {
+        *(array + i++) = (i-1)*2;
+        cout << (i-1)<<setw(6)<<array[i-1] << endl;
+    }
+}
+int sum(int count,...)
+{
+    if(count <= 0)
+        return 0;
+
+    va_list arg_ptr;
+    va_start(arg_ptr, count);
+
+    int sum{};
+    for (int i = 0; i < count; ++i) {
+        sum += va_arg(arg_ptr,int);
+    }
+    va_end(arg_ptr);
+    return sum;
+}
+void fun12()
+{
+    cout << sum(6,2,4,5,9,6,8,9)<<endl;
+}
+double* treble(double data)
+{
+    double* result{new double{}};
+    *result = 3.0 * data;
+    return result;
+}
+void fun13()
+{
+    double num{5.0};
+    double* ptr{};
+
+    ptr = treble(num);
+    cout<<"Three times num = "<< 3.0 * num << endl;
+    cout << "Result = " << *ptr;
+    delete ptr;
+    ptr = nullptr;
+}
+int main()
+{
+//    fun12();
+    fun13();
+    return 0;
+}
+//int main(int argc, char* argv[]) {
+//    cout << endl << "argc = " <<argc << endl;
+//    cout <<"Command line arguments received are: "<<endl;
+//    for (int i = 0; i < argc; ++i) {
+//        cout << "argument " <<(i+1)<<";"<<argv[i]<<endl;
+//    }
+//    fun1();
+//    fun2();
+//    fun4();
+//    fun5();
+//    fun7();
+//    fun9();
+//    fun10();
+//    fun11();
+//   return 0;
+//}
